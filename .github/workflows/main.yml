@@ -37,6 +37,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          port: 22
           script: |
             # Define container and image names
             CONTAINER_NAME=expense-client
