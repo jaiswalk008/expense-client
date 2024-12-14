@@ -32,7 +32,7 @@ jobs:
 
       # SSH into EC2 and deploy the new image
       - name: SSH into EC2 and pull the new image
-        uses: appleboy/ssh-action@v0.1.1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
@@ -41,16 +41,14 @@ jobs:
           script: |
             # Define container and image names
             CONTAINER_NAME=expense-client
-            IMAGE_NAME=jaiswalk008/expense-client:latest
-            
+            IMAGE_NAME=***/expense-client:latest
             # Pull the latest image
-            docker pull $IMAGE_NAME
-
-            # Stop and remove the existing container if it exists
-            if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-              docker stop $CONTAINER_NAME
-              docker rm $CONTAINER_NAME
-            fi
-
-            # Run a new container with the updated image
-            docker run -d --name $CONTAINER_NAME -p 3000:3000 $IMAGE_NAME
+              docker pull $IMAGE_NAME
+              # Stop and remove the existing container if it exists
+              if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
+                docker stop $CONTAINER_NAME
+                docker rm $CONTAINER_NAME
+              fi
+              # Run a new container with the updated image
+              docker run -d --name $CONTAINER_NAME -p 3000:3000 $IMAGE_NAME
+            debug: true
