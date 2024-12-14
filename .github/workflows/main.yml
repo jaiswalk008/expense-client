@@ -1,5 +1,6 @@
 name: CI
-on:  
+
+on:
   push:
     branches: ["main"]
 
@@ -41,13 +42,18 @@ jobs:
           script: |
             # Define container and image names
             CONTAINER_NAME=expense-client
-            IMAGE_NAME=***/expense-client:latest
+            IMAGE_NAME=jaiswalk008/expense-client:latest
+            # Debug: output image name
+            echo "IMAGE_NAME: $IMAGE_NAME"
+            
             # Pull the latest image
-              docker pull $IMAGE_NAME
-              # Stop and remove the existing container if it exists
-              if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
-                docker stop $CONTAINER_NAME
-                docker rm $CONTAINER_NAME
-              fi
-              # Run a new container with the updated image
-              docker run -d --name $CONTAINER_NAME -p 3000:3000 $IMAGE_NAME
+            docker pull $IMAGE_NAME
+            
+            # Stop and remove the existing container if it exists
+            if [ $(docker ps -aq -f name=$CONTAINER_NAME) ]; then
+              docker stop $CONTAINER_NAME
+              docker rm $CONTAINER_NAME
+            fi
+
+            # Run a new container with the updated image
+            docker run -d --name $CONTAINER_NAME -p 3000:3000 $IMAGE_NAME
