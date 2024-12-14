@@ -56,4 +56,4 @@ jobs:
             fi
 
             # Run a new container with the updated image
-            docker run -it -p 3000:3000 $IMAGE_NAME
+            docker run -T -p 3000:3000 $IMAGE_NAME
