@@ -8,10 +8,10 @@ RUN apk add --no-cache git
 WORKDIR /app
 
 # Clone the repository
-RUN git clone https://github.com/jaiswalk008/complete-expense-tracker.git repo
+RUN git clone https://github.com/jaiswalk008/expense-client.git repo
 
-# Navigate to the client folder
-WORKDIR /app/repo/client
+# Navigate to the root of the repo
+WORKDIR /app/repo
 
 # Install dependencies
 RUN npm install
@@ -22,20 +22,20 @@ RUN npm run build
 # Use a lightweight Node.js image for the production environment
 FROM node:20-alpine
 
-# Install pm2 for process management
-RUN npm install -g pm2
+# Install pm2 for process management and serve for static file serving
+RUN npm install -g pm2 serve
 
 # Set working directory in Node.js
 WORKDIR /app
 
 # Copy the built files from the builder stage
-COPY --from=builder /app/repo/client/build /app/build
+COPY --from=builder /app/repo/build /app/build
 
-# Install a simple static server (e.g., serve) to serve the build files
-RUN npm install -g serve
+# Set environment variables to bind to all network interfaces and set the port
+ENV HOST=0.0.0.0 PORT=3000
 
-# Expose the application port (adjust if needed, typically port 5000 for serve)
-EXPOSE 5000
+# Expose the application port
+EXPOSE ${PORT}
 
-# Start the app using pm2 and serve
-CMD ["pm2", "start", "serve", "--name", "client", "--", "-s", "build", "-l", "5000"]
+# Start the app using serve to serve the static files
+CMD ["serve", "-s", "build", "-l", "3000"]
