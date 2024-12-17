@@ -10,7 +10,7 @@ const ForgotPassword = () =>{
         e.preventDefault();
         console.log(email);
         try{
-            const res = await axios.post(process.env.process.env.REACT_APP_BACKEND_URL+'forgotpassword',{'email':email})
+            const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'forgotpassword',{'email':email})
             console.log(res);
             history.push('/mailsent');
         }
