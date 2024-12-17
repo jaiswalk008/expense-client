@@ -25,8 +25,7 @@ const Login = () => {
             password:password,
         }
         try {
-            const res = await axios.post(process.env.REACT_APP_BACKEND_URL+'login/', userDetails);
-            console.log(res.data);
+            const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}login/`, userDetails);
             setErrorMessage('');
             dispatch(authActions.setToken(res.data.token));
             localStorage.setItem('user-name',res.data.username);
