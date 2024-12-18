@@ -7,6 +7,12 @@ import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom.min';
 // import { ExpenseContextProvider } from './Components/Context/ExpenseContextProvider';
 import { store } from './Components/Context/store';
 import { Provider } from 'react-redux';
+import LogRocket from 'logrocket';
+LogRocket.init('tkqgyc/expense-tracker');
+LogRocket.identify('user-name', {
+  name: localStorage.getItem('user-name'),
+   });
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
