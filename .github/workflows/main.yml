@@ -43,9 +43,12 @@ jobs:
             # Define container and image names
             CONTAINER_NAME=expense-client
             IMAGE_NAME=jaiswalk008/expense-client:latest
+            LOG_GROUP_NAME=expense-client  
+            
             # Debug: output image name
             echo "IMAGE_NAME: $IMAGE_NAME"
-            
+            echo "LOG_GROUP_NAME: $LOG_GROUP_NAME"
+          
             # Pull the latest image
             docker pull $IMAGE_NAME
             
@@ -54,7 +57,14 @@ jobs:
               docker stop $CONTAINER_NAME
               docker rm $CONTAINER_NAME
             fi
+          
+            # Run a new container with CloudWatch Logs configuration
+            docker run -d \
+              --name $CONTAINER_NAME \
+              --log-driver=awslogs \
+              --log-opt awslogs-group=$LOG_GROUP_NAME \
+              --log-opt awslogs-stream=$CONTAINER_NAME \
+              -p 3000:3000 \
+              $IMAGE_NAME
 
-            # Run a new container with the updated image
-            docker run -d --name $CONTAINER_NAME -p 3000:3000 $IMAGE_NAME
 
